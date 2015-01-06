@@ -1,2 +1,24 @@
-<h1>Messages#index</h1>
-<p>Find me in app/views/messages/index.html.erb</p>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Messages</title>
+  <link rel="stylesheet" href="">
+</head>
+<body>
+  <table class="message-list">
+    <th>Messages</th>
+    <% @messages.each do |message| %>
+    <tr class="message <%= 'highlight' if message.highlight %>">
+      <td class="message__value"><%= message.value %></td>
+      <td class="message_handle"><%= message.value %></td>
+      <td class="message__sentiment"><%= message.value %></td>
+      <td class="message__counter"><%= message.value %></td>
+    </tr>
+    <% end %>
+  </table>
+
+  <a href="<%= messages_fetch_path %>" class="fetch-messages">Fetch more messages</a>
+</body>
+</html>
