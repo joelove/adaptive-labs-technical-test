@@ -10,4 +10,6 @@ group :test, :development do
   gem 'database_cleaner'
   gem 'webmock'
   gem 'pry'
+  gem 'therubyracer'
+  gem 'execjs'
 end
