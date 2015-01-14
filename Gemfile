@@ -8,8 +8,11 @@ group :test, :development do
   gem 'cucumber-rails', :require => false
   gem 'capybara'
   gem 'database_cleaner'
-  gem 'webmock'
   gem 'pry'
   gem 'therubyracer'
   gem 'execjs'
+end
+
+group :test do
+  gem 'webmock'
 end
