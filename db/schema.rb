@@ -16,7 +16,6 @@ ActiveRecord::Schema.define(version: 20150114175556) do
   create_table "messages", force: true do |t|
     t.datetime "created_at"
     t.integer  "followers"
-    t.integer  "tweet_id"
     t.string   "message"
     t.float    "sentiment"
     t.datetime "updated_at"
