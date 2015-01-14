@@ -5,8 +5,11 @@ class Messages
   attr_reader :response, :message
 
   def fetch
-    fetch_messages
-    save_messages
+    if fetch_messages
+      save_messages
+    else
+      "Error getting messages"
+    end
   end
 
   def list
@@ -16,11 +19,11 @@ class Messages
   private
 
   def fetch_messages
-    @response = ExecJS.eval(response_body)
+    @response = ExecJS.eval(response_body) if response_body
   end
 
   def save_messages
-    unless is_error
+    unless response_error?
       add_messages
     else
       response['error']['message']
@@ -28,10 +31,10 @@ class Messages
   end
 
   def response_body
-    make_request.read
+    make_request.read if make_request
   end
 
-  def is_error
+  def response_error?
     response.is_a?(Hash) && response.has_key?('error')
   end
 
@@ -43,7 +46,11 @@ class Messages
   end
 
   def make_request
-    open(Rails.application.config.messages_api_path)
+    begin
+      open(Rails.application.config.messages_api_path)
+    rescue OpenURI::HTTPError => e
+      nil
+    end
   end
 
   def relevant_messages

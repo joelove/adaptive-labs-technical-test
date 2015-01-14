@@ -119,4 +119,15 @@ RSpec.describe Messages do
       expect(message.count).to eq(2)
     end
   end
+
+  context "when there is a server error" do
+    before do
+      stub_request(:get, Rails.application.config.messages_api_path)
+        .to_return(status: 500)
+    end
+
+    it "returns an error string" do
+      expect(subject.fetch).to eq("Error getting messages")
+    end
+  end
 end
