@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Messages do
 
-  let(:response_body) do
+  let(:positive_response) do
     %{
       [
         {
@@ -27,6 +27,31 @@ RSpec.describe Messages do
     }
   end
 
+  let(:negative_response) do
+    %{
+      [
+        {
+          created_at: "2012-12-07T16:55:45Z",
+          followers: 3,
+          id: 16,
+          message: "Hi there",
+          sentiment: 0,
+          updated_at: "2012-12-07T16:55:45Z",
+          user_handle: "@idiot"
+        },
+        {
+          created_at: "2012-09-27T16:14:27Z",
+          followers: 9,
+          id: 7,
+          message: "Vimto or Ribena? You decide!",
+          sentiment: 0.2,
+          updated_at: "2012-09-27T16:14:27Z",
+          user_handle: "@mad4vimto"
+        }
+      ]
+    }
+  end
+
   let(:error_response) do
     %{
       {
@@ -46,13 +71,26 @@ RSpec.describe Messages do
   context "when two messages about coke are fetched" do
     before do
       stub_request(:get, Rails.application.config.messages_api_path)
-        .to_return(status: 200, body: response_body, headers: {})
+        .to_return(status: 200, body: positive_response, headers: {})
 
       subject.fetch
     end
 
     it "lists two messages" do
       expect(subject.list.length).to eq(2)
+    end
+  end
+
+  context "when two irrelevant message are fetched" do
+    before do
+      stub_request(:get, Rails.application.config.messages_api_path)
+        .to_return(status: 200, body: negative_response, headers: {})
+
+      subject.fetch
+    end
+
+    it "lists no messages" do
+      expect(subject.list).to eq([])
     end
   end
 
@@ -64,6 +102,21 @@ RSpec.describe Messages do
 
     it "returns the error message" do
       expect(subject.fetch).to eq("Server error")
+    end
+  end
+
+  context "when multiple responses contain the same message" do
+    before do
+      stub_request(:get, Rails.application.config.messages_api_path)
+        .to_return(status: 200, body: positive_response, headers: {})
+
+      subject.fetch
+      subject.fetch
+    end
+
+    it "increments the count on the duplicate message" do
+      message = subject.list.first
+      expect(message.count).to eq(2)
     end
   end
 end
