@@ -27,6 +27,16 @@ RSpec.describe Messages do
     }
   end
 
+  let(:error_response) do
+    %{
+      {
+        error: {
+          message: "Server error"
+        }
+      }
+    }
+  end
+
   context "when no messages have been fetched" do
     it "lists no messages" do
       expect(subject.list).to eq([])
@@ -37,11 +47,23 @@ RSpec.describe Messages do
     before do
       stub_request(:get, Rails.application.config.messages_api_path)
         .to_return(status: 200, body: response_body, headers: {})
+
       subject.fetch
     end
 
     it "lists two messages" do
       expect(subject.list.length).to eq(2)
+    end
+  end
+
+  context "when the api returns an error" do
+    before do
+      stub_request(:get, Rails.application.config.messages_api_path)
+        .to_return(status: 200, body: error_response, headers: {})
+    end
+
+    it "returns the error message" do
+      expect(subject.fetch).to eq("Server error")
     end
   end
 end
