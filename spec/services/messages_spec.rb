@@ -79,6 +79,11 @@ RSpec.describe Messages do
     it "lists two messages" do
       expect(subject.list.length).to eq(2)
     end
+
+    it "clears messages" do
+      subject.clear
+      expect(subject.list.length).to eq(0)
+    end
   end
 
   context "when two irrelevant message are fetched" do
