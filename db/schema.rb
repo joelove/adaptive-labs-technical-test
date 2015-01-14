@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150114142338) do
+ActiveRecord::Schema.define(version: 20150114175556) do
 
   create_table "messages", force: true do |t|
     t.datetime "created_at"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20150114142338) do
     t.float    "sentiment"
     t.datetime "updated_at"
     t.string   "user_handle"
+    t.integer  "count"
   end
 
 end

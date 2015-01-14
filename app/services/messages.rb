@@ -20,7 +20,12 @@ class Messages
   def save_messages(response)
     messages = relevant_messages_for(response)
     messages.each do |message|
-      Message.create(message)
+      existing_message = Message.find_by(id: message['id'])
+      if existing_message
+        existing_message.increment!(:count)
+      else
+        Message.create(message.merge(count: 1))
+      end
     end
   end
 
