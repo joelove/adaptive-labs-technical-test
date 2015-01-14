@@ -20,6 +20,11 @@
     <% end %>
   </table>
 
+  <article class="notice">
+    <span class="notice__message"><%= params[:notice] %></span>
+  </article>
+
   <a href="<%= messages_fetch_path %>" class="fetch-messages">Fetch more messages</a>
+  <a href="<%= messages_clear_path %>" class="clear-messages">Clear messages</a>
 </body>
 </html>

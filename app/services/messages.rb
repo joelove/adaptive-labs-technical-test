@@ -8,7 +8,7 @@ class Messages
     if fetch_messages
       save_messages
     else
-      "Error getting messages"
+      error_msg
     end
   end
 
@@ -16,10 +16,15 @@ class Messages
     Message.all
   end
 
+  def clear
+    Message.delete_all
+  end
+
   private
 
   def fetch_messages
-    @response = ExecJS.eval(response_body) if response_body
+    json = response_body
+    @response = ExecJS.eval(json) if json
   end
 
   def save_messages
@@ -31,7 +36,8 @@ class Messages
   end
 
   def response_body
-    make_request.read if make_request
+    response = make_request
+    response.read if response
   end
 
   def response_error?
@@ -39,10 +45,12 @@ class Messages
   end
 
   def add_messages
-    relevant_messages.each do |message|
+    new_messages = relevant_messages
+    new_messages.each do |message|
       @message = message
       add_or_update
     end
+    success_msg(new_messages.size)
   end
 
   def make_request
@@ -75,5 +83,13 @@ class Messages
 
   def relevant?(item)
     item['message'].match(/(?:diet\s+)?(?:coke|coca(?:-|\s+)cola)/i)
+  end
+
+  def success_msg(count)
+    "Retrieved #{count} relevant message(s)"
+  end
+
+  def error_msg
+    "Error getting messages"
   end
 end

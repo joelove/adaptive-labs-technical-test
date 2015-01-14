@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get 'messages/index'
   get 'messages/fetch'
+  get 'messages/clear'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

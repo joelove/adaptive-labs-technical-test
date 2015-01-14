@@ -4,7 +4,11 @@ class MessagesController < ApplicationController
   end
 
   def fetch
-    Messages.new.fetch
+    redirect_to :action => "index", :notice => Messages.new.fetch
+  end
+
+  def clear
+    Messages.new.clear
     redirect_to :action => "index"
   end
 end
