@@ -2,12 +2,6 @@ require 'open-uri'
 require 'execjs'
 
 class Messages
-  attr_reader :js
-
-  def initialize
-    @context = V8::Context.new
-  end
-
   def fetch
     response = fetch_new
     unless is_error(response)
