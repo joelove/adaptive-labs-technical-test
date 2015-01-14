@@ -10,11 +10,12 @@
   <table class="message-list">
     <th>Messages</th>
     <% @messages.each do |message| %>
-    <tr class="message <%= 'highlight' if message.highlight %>">
-      <td class="message__value"><%= message.value %></td>
-      <td class="message_handle"><%= message.value %></td>
-      <td class="message__sentiment"><%= message.value %></td>
-      <td class="message__counter"><%= message.value %></td>
+    <%# binding.pry %>
+    <tr class="message <%#= 'highlight' if message.highlight %>">
+      <td class="message__message"><%= message.message %></td>
+      <td class="message__handle"><%= message.user_handle %></td>
+      <td class="message__sentiment"><%= message.sentiment %></td>
+      <td class="message__counter"><%= message.count %></td>
     </tr>
     <% end %>
   </table>
